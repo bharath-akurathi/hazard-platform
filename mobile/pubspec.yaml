@@ -1,62 +1,53 @@
 name: synapse_citizen_app
-description: Synapse Citizen Reporter - AI-powered hazard reporting app
+description: Synapse Citizen Reporter - AI-powered hazard reporting app.
 version: 1.0.0+1
+publish_to: 'none' # Recommended for private packages.
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
 
-
-platforms:
-  android:
-    package: com.example.synapse_citizen_app
-    minSdkVersion: 21
-    
 dependencies:
   flutter:
     sdk: flutter
-  
-  # Core dependencies
+
+  # Core
   cupertino_icons: ^1.0.2
-  
-  # HTTP and networking
+
+  # Backend & Networking
+  supabase_flutter: ^2.5.3
   http: ^1.1.0
   dio: ^5.3.2
-  
-  # Location services
-  geolocator: ^14.0.2
-  permission_handler: ^12.0.1
+
+  # State Management
+  provider: ^6.1.2
+  flutter_riverpod: ^2.4.5
+
+  # Mapping & Location
+  flutter_map: ^6.1.0
+  latlong2: ^0.9.1
+  geolocator: ^12.0.0
   geocoding: ^2.1.1
+  permission_handler: ^12.0.1
   
-  # Media and image handling
-  image_picker: ^1.0.4
+  # Media & Images
+  image_picker: ^1.1.2
   cached_network_image: ^3.3.0
   
-  # Maps
-  google_maps_flutter: ^2.5.0
-  flutter_map: ^6.0.1
-  latlong2: 0.9.1
-  
-  # State management
-  provider: ^6.0.5
-  riverpod: ^2.4.5
-  flutter_riverpod: ^2.4.5
-  
-  # Storage
+  # Local Storage
   shared_preferences: ^2.2.2
   hive: ^2.2.3
   hive_flutter: ^1.1.0
-  
-  # UI components
+
+  # UI & Utilities
   flutter_svg: ^2.0.7
   lottie: ^2.7.0
-  
-  # Utilities
-  intl: ^0.18.1
+  intl: ^0.19.0
   logger: ^2.0.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  
   flutter_lints: ^3.0.0
   build_runner: ^2.4.7
   hive_generator: ^2.0.1

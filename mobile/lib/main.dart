@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'screens/report_screen.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:synapse_citizen_app/screens/alerts_screen.dart';
+import 'package:synapse_citizen_app/screens/map_screen.dart';
+import 'package:synapse_citizen_app/screens/profile_screen.dart';
+import 'package:synapse_citizen_app/screens/report_screen.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Supabase.initialize(
+    url: 'https://vwgrfumuoovrilfbdttb.supabase.co', // Use your actual URL
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ3Z3JmdW11b292cmlsZmJkdHRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgxMTU4NjgsImV4cCI6MjA3MzY5MTg2OH0.6W3IohCXN12qF_u5YtlSLvbsmDxLj9g4tEfCT2gw1S4', // Use your actual anon key
+  );
+
   runApp(const SynapseApp());
 }
 
@@ -12,232 +22,69 @@ class SynapseApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Synapse Citizen Reporter',
-      debugShowCheckedModeBanner: false,
+      title: 'Project Synapse',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        primaryColor: Colors.blue.shade600,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blue.shade600,
-          brightness: Brightness.light,
-        ),
-        useMaterial3: true,
-        
-        // App Bar Theme
-        appBarTheme: AppBarTheme(
-          backgroundColor: Colors.blue.shade600,
-          foregroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: true,
-          systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarColor: Colors.transparent,
-            statusBarIconBrightness: Brightness.light,
-          ),
-        ),
-        
-        // Card Theme
-        cardTheme: CardThemeData(
-          elevation: 2,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          margin: const EdgeInsets.symmetric(vertical: 4),
-        ),
-        
-        // Input Decoration Theme
-        inputDecorationTheme: InputDecorationTheme(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.grey.shade300),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.blue.shade600, width: 2),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Colors.red, width: 2),
-          ),
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 12,
-          ),
-        ),
-        
-        // Elevated Button Theme
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 24,
-              vertical: 12,
-            ),
-          ),
-        ),
-        
-        // Text Button Theme
-        textButtonTheme: TextButtonThemeData(
-          style: TextButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-        ),
-        
-        // Outlined Button Theme
-        outlinedButtonTheme: OutlinedButtonThemeData(
-          style: OutlinedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            side: BorderSide(color: Colors.blue.shade600),
-          ),
-        ),
-        
-        // Snackbar Theme
-        snackBarTheme: SnackBarThemeData(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          behavior: SnackBarBehavior.floating,
-        ),
+        primarySwatch: Colors.indigo,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: Colors.indigo,
+        ).copyWith(secondary: Colors.orange),
       ),
-      
-      home: const SplashScreen(),
+      home: const MainScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  _MainScreenState createState() => _MainScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _fadeAnimation;
+class _MainScreenState extends State<MainScreen> {
+  int _selectedIndex = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      duration: const Duration(seconds: 2),
-      vsync: this,
-    );
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeIn),
-    );
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
-    _animationController.forward();
-    
-    // Navigate to main screen after splash
-    Future.delayed(const Duration(seconds: 3), () {
-      if (mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const ReportScreen()),
-        );
-      }
+  void _navigateToMap() {
+    setState(() {
+      _selectedIndex = 1; // Index of MapScreen
     });
   }
 
   @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    // The list of screens that correspond to the BottomNavigationBar items
+    final List<Widget> screens = <Widget>[
+      ReportScreen(onReportSubmitted: _navigateToMap), // <-- THE FIX IS HERE
+      const MapScreen(),
+      AlertsScreen(onViewOnMap: _navigateToMap),
+      const ProfileScreen(),
+    ];
+
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.blue.shade600,
-              Colors.blue.shade800,
-            ],
-          ),
-        ),
-        child: Center(
-          child: FadeTransition(
-            opacity: _fadeAnimation,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 120,
-                  height: 120,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        blurRadius: 20,
-                        offset: const Offset(0, 10),
-                      ),
-                    ],
-                  ),
-                  child: const Center(
-                    child: Text(
-                      '🌊',
-                      style: TextStyle(fontSize: 60),
-                    ),
-                  ),
-                ),
-                
-                const SizedBox(height: 32),
-                
-                const Text(
-                  'Synapse',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1.2,
-                  ),
-                ),
-                
-                const SizedBox(height: 8),
-                
-                const Text(
-                  'Citizen Reporter',
-                  style: TextStyle(
-                    color: Colors.white70,
-                    fontSize: 18,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-                
-                const SizedBox(height: 48),
-                
-                const CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                ),
-                
-                const SizedBox(height: 16),
-                
-                const Text(
-                  'Building safer communities together',
-                  style: TextStyle(
-                    color: Colors.white60,
-                    fontSize: 14,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: screens,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.report), label: 'Report'),
+          BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Map'),
+          BottomNavigationBarItem(icon: Icon(Icons.warning), label: 'Alerts'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.indigo,
+        unselectedItemColor: Colors.grey,
+        onTap: _onItemTapped,
+        type: BottomNavigationBarType.fixed,
       ),
     );
   }
