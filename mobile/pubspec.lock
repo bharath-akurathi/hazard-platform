@@ -18,7 +18,10 @@ packages:
     source: hosted
     version: "6.4.1"
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
   app_links:
     dependency: transitive
     description:
@@ -51,6 +54,9 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   archive:
     dependency: transitive
@@ -253,6 +259,7 @@ packages:
     source: hosted
     version: "2.3.6"
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   dbus:
     dependency: transitive
     description:
@@ -261,6 +268,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.11"
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
   dio:
